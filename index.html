@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Aether Paradox: The False Horizon • CrazyGames</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg">
+  <link rel="stylesheet" href="./src/style.css">
+  <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Floating In-Game HUD Layer (Edge-to-Edge with pointer-events: none) -->
+    <div id="in-game-hud" class="hidden">
+      <!-- Top HUD Bar -->
+      <div class="hud-top">
+        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+          <div id="hud-level-title" class="hud-badge">LEVEL 1</div>
+          <div id="hud-stars-group" class="hud-stars-wrap">
+            <span id="star-icon-1" class="star-dim">★</span>
+            <span id="star-icon-2" class="star-dim">★</span>
+            <span id="star-icon-3" class="star-dim">★</span>
+          </div>
+          <div id="hud-death-val" class="hud-badge deaths">DEATHS: 0</div>
+          <div id="hud-orbs-val" class="hud-badge orbs">✦ 0</div>
+          <button id="btn-early-finish" class="hud-btn-early-finish hidden">
+            ✅ CONCLUIR FASE (★) ➔
+          </button>
+        </div>
+
+        <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+          <button id="btn-sound-toggle" class="hud-btn" title="Sound">🔊</button>
+          <button id="btn-lang-toggle" class="hud-btn" title="Language">🇧🇷 PT</button>
+          <button id="btn-open-shop" class="hud-btn" title="Shop">🛒 LOJA</button>
+          <button id="btn-open-quests" class="hud-btn" title="Quests">📜 MISSÕES</button>
+          <button id="btn-open-daily" class="hud-btn" title="Daily Supply">🎁 DIÁRIO</button>
+          <button id="btn-open-spin" class="hud-btn" title="Lucky Wheel">🎡 ROLETA</button>
+          <button id="btn-open-menu" class="hud-btn" title="Levels">☰ FASES</button>
+        </div>
+      </div>
+
+      <!-- Touch Controls Layer for Mobile -->
+      <div id="touch-controls-layer">
+        <div class="touch-group-left">
+          <button id="touch-btn-left" class="touch-btn">◀</button>
+          <button id="touch-btn-right" class="touch-btn">▶</button>
+        </div>
+        <div class="touch-group-right">
+          <button id="touch-btn-jump" class="touch-btn jump">▲ BOING</button>
+        </div>
+      </div>
+
+      <!-- Bottom HUD Bar -->
+      <div class="hud-bottom">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button id="hud-fast-retry-btn" class="hud-btn small">[R] REINÍCIO RÁPIDO</button>
+          <span id="hud-controls-hint" class="controls-hint">⚡ [A/D] MOVER • [W/ESPAÇO] PULAR • [R] REINICIAR</span>
+        </div>
+        <a href="https://kinomuse.com.br" target="_blank" rel="noopener noreferrer" class="brand-link">kinomuse.com.br</a>
+      </div>
+    </div>
+
+    <!-- Modal: Seleção de Fases (Level Select) -->
+    <div id="modal-level-select" class="game-modal hidden">
+      <div class="modal-content" style="max-width: 680px;">
+        <div class="modal-header">
+          <h2 style="font-size: 18px; color: #38bdf8; font-weight: 900;">CORREDORES QUÂNTICOS (SELEÇÃO DE FASES)</h2>
+          <button id="btn-close-menu" class="modal-close-btn">✕</button>
+        </div>
+        <div id="levels-grid" class="levels-grid"></div>
+      </div>
+    </div>
+
+    <!-- Modal: Vitória de Nível (Victory) -->
+    <div id="modal-victory" class="game-modal hidden">
+      <div class="modal-content">
+        <h2 id="vic-title" style="color: #22c55e; font-size: 22px; font-weight: 900;">NÍVEL CONCLUÍDO!</h2>
+        <div id="vic-stats" style="margin: 14px 0; color: #94a3b8; font-size: 14px;"></div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 16px;">
+          <button id="btn-vic-double" class="hud-btn" style="border-color: #facc15; color: #facc15; font-size: 14px; padding: 12px;">
+            ✦ DOBRAR ORBES (2X) [📺 AD]
+          </button>
+          <button id="btn-vic-next" class="btn-primary" style="margin: 0; font-size: 15px; padding: 12px;">
+            PRÓXIMO NÍVEL ➔
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Cyber Shop -->
+    <div id="modal-shop" class="game-modal hidden">
+      <div class="modal-content" style="max-width: 620px;">
+        <div class="modal-header">
+          <h2 style="font-size: 18px; color: #38bdf8; font-weight: 900;">CYBER SHOP</h2>
+          <button id="btn-close-shop" class="modal-close-btn">✕</button>
+        </div>
+        <div id="shop-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Modal: Daily Supply -->
+    <div id="modal-daily" class="game-modal hidden">
+      <div class="modal-content" style="max-width: 580px;">
+        <div class="modal-header">
+          <h2 style="font-size: 18px; color: #38bdf8; font-weight: 900;">SUPRIMENTO DIÁRIO</h2>
+          <button id="btn-close-daily" class="modal-close-btn">✕</button>
+        </div>
+        <div id="daily-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Modal: Lucky Spin -->
+    <div id="modal-spin" class="game-modal hidden">
+      <div class="modal-content" style="max-width: 480px;">
+        <div class="modal-header">
+          <h2 style="font-size: 18px; color: #38bdf8; font-weight: 900;">ROLETA DA SINGULARIDADE</h2>
+          <button id="btn-close-spin" class="modal-close-btn">✕</button>
+        </div>
+        <div id="spin-modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Modal: Quests / Directives -->
+    <div id="modal-quests" class="game-modal hidden">
+      <div class="modal-content" style="max-width: 580px;">
+        <div class="modal-header">
+          <h2 style="font-size: 18px; color: #38bdf8; font-weight: 900;">DIRETRIZES & MISSÕES</h2>
+          <button id="btn-close-quests" class="modal-close-btn">✕</button>
+        </div>
+        <div id="quests-modal-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>
