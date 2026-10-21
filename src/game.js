@@ -825,17 +825,60 @@ export class TrollPlatformerGame {
         ctx.stroke();
       }
 
-      // Body
+      // Ground locator light beneath player
+      if (p.isGrounded) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 245, 255, 0.18)';
+        ctx.beginPath();
+        ctx.ellipse(0, p.h / 2 + 2, p.w * 0.7, 3, 0, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Body (high-contrast cyber box with neon glow)
       ctx.fillStyle = p.isDead ? '#ef4444' : skinStyle.color;
       ctx.shadowColor = p.isDead ? '#ef4444' : skinStyle.shadow;
-      ctx.shadowBlur = 14;
+      ctx.shadowBlur = 16;
       ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
 
-      // Comical Eyes (look in facing direction)
-      const lookOffset = p.facing * 3;
-      ctx.fillStyle = skinStyle.eyeColor;
-      ctx.fillRect(-p.w / 4 + lookOffset - 2, -p.h / 4, 4, 4);
-      ctx.fillRect(p.w / 4 + lookOffset - 2, -p.h / 4, 4, 4);
+      // Cybernetic crisp outline
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = p.isDead ? '#fca5a5' : '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(-p.w / 2, -p.h / 2, p.w, p.h);
+
+      // Visor / Cyber stripe
+      ctx.fillStyle = p.isDead ? '#991b1b' : 'rgba(3, 7, 18, 0.45)';
+      ctx.fillRect(-p.w / 2 + 2, -p.h / 2 + 5, p.w - 4, 8);
+
+      // Expressive Eyes (with white sclera and looking pupils)
+      const lookOffset = p.facing * 2.5;
+      const eyeY = -p.h / 2 + 7;
+
+      // Left eye
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-p.w / 4 - 3, eyeY, 5, 5);
+      ctx.fillStyle = p.isDead ? '#ef4444' : skinStyle.eyeColor;
+      ctx.fillRect(-p.w / 4 - 3 + (lookOffset > 0 ? 2 : 0), eyeY + 1, 3, 3);
+
+      // Right eye
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(p.w / 4 - 2, eyeY, 5, 5);
+      ctx.fillStyle = p.isDead ? '#ef4444' : skinStyle.eyeColor;
+      ctx.fillRect(p.w / 4 - 2 + (lookOffset > 0 ? 2 : 0), eyeY + 1, 3, 3);
+
+      // Jump Thruster spark
+      if (!p.isGrounded && p.vy < 0) {
+        ctx.fillStyle = '#00f5ff';
+        ctx.shadowColor = '#00f5ff';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.moveTo(-4, p.h / 2);
+        ctx.lineTo(4, p.h / 2);
+        ctx.lineTo(0, p.h / 2 + 6 + Math.random() * 4);
+        ctx.closePath();
+        ctx.fill();
+      }
 
       ctx.restore();
 

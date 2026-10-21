@@ -355,19 +355,46 @@ export class HudManager {
 
   initTouchControls() {
     const g = this.game;
+    const touchLayer = document.getElementById('touch-controls-layer');
     const btnLeft = document.getElementById('touch-btn-left');
     const btnRight = document.getElementById('touch-btn-right');
     const btnJump = document.getElementById('touch-btn-jump');
+
+    // Only activate touch layer when genuine touch is detected (mobile devices)
+    const showTouch = () => {
+      if (touchLayer) {
+        touchLayer.classList.remove('touch-controls-hidden');
+        touchLayer.classList.add('touch-controls-visible');
+      }
+    };
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+      (window.matchMedia && window.matchMedia('(pointer: coarse)').matches && window.innerWidth <= 1024);
+
+    if (isMobile) {
+      showTouch();
+    } else {
+      window.addEventListener('touchstart', () => {
+        showTouch();
+      }, { once: true, passive: true });
+    }
 
     const bindTouch = (el, onDown, onUp) => {
       if (!el) return;
       el.addEventListener('touchstart', (e) => {
         e.preventDefault();
+        e.stopPropagation();
         sound.init();
         onDown();
       }, { passive: false });
 
       el.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onUp();
+      }, { passive: false });
+
+      el.addEventListener('touchcancel', (e) => {
         e.preventDefault();
         onUp();
       }, { passive: false });

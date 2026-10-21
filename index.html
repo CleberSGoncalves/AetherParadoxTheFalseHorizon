@@ -16,7 +16,7 @@
     <div id="in-game-hud" class="hidden">
       <!-- Top HUD Bar -->
       <div class="hud-top">
-        <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <div class="hud-top-left">
           <div id="hud-level-title" class="hud-badge">LEVEL 1</div>
           <div id="hud-stars-group" class="hud-stars-wrap">
             <span id="star-icon-1" class="star-dim">★</span>
@@ -30,7 +30,7 @@
           </button>
         </div>
 
-        <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+        <div class="hud-top-right">
           <button id="btn-sound-toggle" class="hud-btn" title="Sound">🔊</button>
           <button id="btn-lang-toggle" class="hud-btn" title="Language">🇧🇷 PT</button>
           <button id="btn-open-shop" class="hud-btn" title="Shop">🛒 LOJA</button>
@@ -41,24 +41,24 @@
         </div>
       </div>
 
-      <!-- Touch Controls Layer for Mobile -->
-      <div id="touch-controls-layer">
-        <div class="touch-group-left">
-          <button id="touch-btn-left" class="touch-btn">◀</button>
-          <button id="touch-btn-right" class="touch-btn">▶</button>
-        </div>
-        <div class="touch-group-right">
-          <button id="touch-btn-jump" class="touch-btn jump">▲ BOING</button>
-        </div>
-      </div>
-
       <!-- Bottom HUD Bar -->
       <div class="hud-bottom">
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
           <button id="hud-fast-retry-btn" class="hud-btn small">[R] REINÍCIO RÁPIDO</button>
           <span id="hud-controls-hint" class="controls-hint">⚡ [A/D] MOVER • [W/ESPAÇO] PULAR • [R] REINICIAR</span>
         </div>
         <a href="https://kinomuse.com.br" target="_blank" rel="noopener noreferrer" class="brand-link">kinomuse.com.br</a>
+      </div>
+    </div>
+
+    <!-- Mobile Virtual Touch Controls Layer (Docked strictly at bottom corners, hidden by default on desktop) -->
+    <div id="touch-controls-layer" class="touch-controls-hidden">
+      <div class="touch-group-left">
+        <button id="touch-btn-left" class="touch-btn" aria-label="Left">◀</button>
+        <button id="touch-btn-right" class="touch-btn" aria-label="Right">▶</button>
+      </div>
+      <div class="touch-group-right">
+        <button id="touch-btn-jump" class="touch-btn jump" aria-label="Jump">▲</button>
       </div>
     </div>
 

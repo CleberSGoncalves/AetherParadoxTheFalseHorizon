@@ -1,6 +1,6 @@
 /*
  * Aether Paradox: The False Horizon - Master Stylesheet
- * 100% Fullscreen Edge-to-Edge Responsive Canvas + Floating Overlay HUD
+ * 100% Fullscreen Edge-to-Edge Responsive Canvas + Non-Obtrusive Floating HUD
  */
 
 .hidden {
@@ -17,8 +17,8 @@
 }
 
 :root {
-  --safe-top: env(safe-area-inset-top, 16px);
-  --safe-bottom: env(safe-area-inset-bottom, 16px);
+  --safe-top: env(safe-area-inset-top, 12px);
+  --safe-bottom: env(safe-area-inset-bottom, 12px);
   --cyan-glow: #00f5ff;
   --sky-glow: #38bdf8;
   --gold-glow: #facc15;
@@ -53,7 +53,7 @@ html, body {
   z-index: 1;
 }
 
-/* Floating Overlay In-Game HUD */
+/* Floating Overlay In-Game HUD (Zero intrusion in gameplay area) */
 #in-game-hud {
   position: absolute;
   inset: 0;
@@ -62,9 +62,10 @@ html, body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--safe-top) 16px var(--safe-bottom) 16px;
+  padding: var(--safe-top) 14px var(--safe-bottom) 14px;
 }
 
+/* Single-row sleek top bar */
 .hud-top {
   display: flex;
   align-items: center;
@@ -72,20 +73,37 @@ html, body {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  gap: 10px;
+  gap: 8px;
+  flex-wrap: nowrap;
+  pointer-events: none;
+}
+
+.hud-top-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.hud-top-right {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: nowrap;
 }
 
 .hud-badge {
-  background: rgba(15, 23, 42, 0.88);
+  background: rgba(15, 23, 42, 0.85);
   border: 1px solid rgba(56, 189, 248, 0.35);
-  backdrop-filter: blur(8px);
-  padding: 7px 14px;
-  border-radius: 10px;
-  font-size: 12px;
+  backdrop-filter: blur(6px);
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 11px;
   font-weight: 800;
   color: #38bdf8;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .hud-badge.deaths {
@@ -101,18 +119,19 @@ html, body {
 .hud-stars-wrap {
   display: flex;
   align-items: center;
-  gap: 3px;
-  background: rgba(15, 23, 42, 0.88);
+  gap: 2px;
+  background: rgba(15, 23, 42, 0.85);
   border: 1px solid rgba(250, 204, 21, 0.35);
-  backdrop-filter: blur(8px);
-  padding: 6px 12px;
-  border-radius: 10px;
-  font-size: 15px;
+  backdrop-filter: blur(6px);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .star-gold {
   color: #facc15;
-  text-shadow: 0 0 10px #facc15;
+  text-shadow: 0 0 8px #facc15;
 }
 
 .star-dim {
@@ -124,40 +143,42 @@ html, body {
   cursor: pointer;
   background: linear-gradient(135deg, #10b981, #059669);
   border: 1.5px solid #22c55e;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #030712;
   font-weight: 900;
-  font-size: 12px;
+  font-size: 11px;
   letter-spacing: 0.5px;
-  padding: 7px 14px;
-  box-shadow: 0 0 16px rgba(34, 197, 94, 0.6);
+  padding: 5px 12px;
+  white-space: nowrap;
+  box-shadow: 0 0 14px rgba(34, 197, 94, 0.6);
   animation: pulseEarly 1.4s infinite ease-in-out;
 }
 
 @keyframes pulseEarly {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 0 12px rgba(34, 197, 94, 0.6);
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
   }
   50% {
-    transform: scale(1.05);
-    box-shadow: 0 0 24px rgba(34, 197, 94, 0.9);
+    transform: scale(1.04);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.85);
   }
 }
 
 .hud-btn {
   pointer-events: auto;
   cursor: pointer;
-  background: rgba(15, 23, 42, 0.88);
-  border: 1px solid rgba(56, 189, 248, 0.4);
-  backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  backdrop-filter: blur(6px);
   color: #fff;
-  border-radius: 10px;
-  padding: 7px 12px;
-  font-size: 12px;
+  border-radius: 8px;
+  padding: 5px 9px;
+  font-size: 11px;
   font-weight: 800;
+  white-space: nowrap;
   transition: all 0.15s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
 .hud-btn:hover {
@@ -167,8 +188,8 @@ html, body {
 }
 
 .hud-btn.small {
-  padding: 5px 10px;
-  font-size: 11px;
+  padding: 4px 8px;
+  font-size: 10px;
 }
 
 .hud-btn.active {
@@ -183,19 +204,21 @@ html, body {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  font-size: 12px;
+  font-size: 11px;
   color: rgba(255, 255, 255, 0.65);
+  pointer-events: none;
 }
 
 .controls-hint {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 .brand-link {
   pointer-events: auto;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(255, 255, 255, 0.4);
   text-decoration: none;
   font-size: 11px;
   transition: color 0.15s;
@@ -205,64 +228,79 @@ html, body {
   color: #38bdf8;
 }
 
-/* Touch Controls Layer for Mobile */
+/* ==========================================================================
+   TOUCH CONTROLS LAYER (Strictly at extreme bottom corners, hidden on desktop)
+   ========================================================================== */
 #touch-controls-layer {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 10px 10px 10px;
+  position: absolute;
+  inset: 0;
   pointer-events: none;
+  z-index: 25;
+}
+
+/* Hidden by default on all desktops and pointer devices */
+.touch-controls-hidden {
+  display: none !important;
+}
+
+.touch-controls-visible {
+  display: block !important;
 }
 
 .touch-group-left {
+  position: absolute;
+  bottom: 18px;
+  left: 20px;
   display: flex;
-  gap: 12px;
+  gap: 14px;
   pointer-events: auto;
 }
 
 .touch-group-right {
+  position: absolute;
+  bottom: 18px;
+  right: 20px;
   pointer-events: auto;
 }
 
 .touch-btn {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: rgba(15, 23, 42, 0.75);
-  border: 1.5px solid rgba(56, 189, 248, 0.5);
-  color: #00f5ff;
-  font-size: 20px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1.5px solid rgba(56, 189, 248, 0.35);
+  color: rgba(0, 245, 255, 0.9);
+  font-size: 18px;
   font-weight: 900;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.5);
-  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  backdrop-filter: blur(4px);
   touch-action: none;
+  transition: transform 0.1s ease, background 0.1s ease;
 }
 
 .touch-btn.jump {
-  width: 100px;
-  font-size: 13px;
-  letter-spacing: 1px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  font-size: 22px;
   background: rgba(16, 185, 129, 0.25);
-  border-color: #10b981;
+  border: 2px solid rgba(34, 197, 94, 0.5);
   color: #22c55e;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
 }
 
 .touch-btn:active {
-  background: rgba(0, 245, 255, 0.35);
-  transform: scale(0.95);
+  background: rgba(0, 245, 255, 0.4);
+  border-color: #00f5ff;
+  transform: scale(0.92);
 }
 
-/* Hide touch buttons on mouse/keyboard desktops */
-@media (hover: hover) and (pointer: fine) {
-  #touch-controls-layer {
-    display: none !important;
-  }
+.touch-btn.jump:active {
+  background: rgba(34, 197, 94, 0.45);
+  transform: scale(0.92);
 }
 
 /* Modals */
@@ -275,7 +313,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
 }
 
 .modal-content {
@@ -283,7 +321,7 @@ html, body {
   border: 1.5px solid rgba(56, 189, 248, 0.4);
   box-shadow: 0 0 40px rgba(56, 189, 248, 0.2), inset 0 0 20px rgba(56, 189, 248, 0.05);
   border-radius: 20px;
-  padding: 24px;
+  padding: 22px;
   width: 100%;
   max-width: 540px;
   text-align: center;
